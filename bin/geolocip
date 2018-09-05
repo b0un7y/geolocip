@@ -19,6 +19,7 @@ desc: runs on startup if given ip address and also performs checks and updates.
 class Engine():
     def __init__(self, ip):
         self.ip = ip
+        self.root = os.path.expanduser("~")
     """
     func - run
     desc: run's database check to print location
@@ -31,7 +32,8 @@ class Engine():
     """
     def setup(self):
         if self.dep_check():
-            pass
+            if not os.path.isdir(self.root + "/.geolocip"):
+                os.system("mkdir " + self.root + "/.geolocip")
         else:
             sys.exit("Install dependencies to run geolocip...")
     """
@@ -60,7 +62,15 @@ class Engine():
     desc: pulls data from online and unzips
     """
     def update(self):
-        pass
+        print("Updating database...\n\n")
+        if os.path.exists(self.root + "/.geolocip/GeoLiteCity.dat"):
+            os.system("rm " + self.root + "/.geolocip/GeoLiteCity.dat")
+        if os.path.exists(self.root + "/.geolocip/GeoLiteCity.dat.gz"):
+            os.system("rm " + self.root + "/.geolocip/GeoLiteCity.dat.gz")
+        os.system("wget -P " + self.root + "/.geolocip http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz")
+        print("\nExpanding database")
+        os.system("gzip -d " + self.root + "/.geolocip/GeoLiteCity.dat.gz")
+        print("\nUpdate completed.")
 
 if __name__ == "__main__":
     a = argparse.ArgumentParser()
