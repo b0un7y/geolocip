@@ -10,6 +10,7 @@ owner: b0un7y - so it is done...
 import argparse
 import pygeoip
 import os
+import sys
 
 """
 class - Engine
@@ -29,13 +30,31 @@ class Engine():
     desc: checks integrity of database otherwise mkdir and calls update
     """
     def setup(self):
-        pass
+        if self.dep_check():
+            pass
+        else:
+            sys.exit("Install dependencies to run geolocip...")
     """
     func - dep_check
     desc: checks system for wget and gzip
     """
     def dep_check(self):
-        pass
+        wget_g = False
+        gzip_g = False
+        paths = os.popen("echo $PATH").read().split(":")
+        for p in paths:
+            if os.path.exists(p + "/wget"):
+                wget_g = True
+            if os.path.exists(p + "/gzip"):
+                gzip_g = True
+        if not wget_g:
+            print("Dependency not met: wget")
+        if not gzip_g:
+            print("Dependency not met: gzip")
+        if wget_g and gzip_g:
+            return 1
+        return 0
+
     """
     func - update
     desc: pulls data from online and unzips
@@ -49,6 +68,7 @@ if __name__ == "__main__":
     a.add_argument("-i", "--ip", help="ip address of target")
     args = a.parse_args()
     e = Engine(args.ip)
+    e.setup()
     if args.update:
         e.update()
     e.run()
