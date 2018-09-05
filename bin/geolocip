@@ -25,7 +25,11 @@ class Engine():
     desc: run's database check to print location
     """
     def run(self):
-        pass
+        if self.ip:
+            g = pygeoip.GeoIP(self.root + "/.geolocip/GeoLiteCity.dat")
+            r = g.record_by_addr(self.ip)
+            for key,val in r.items():
+                print("%s: %s" %(key,val))
     """
     func - setup
     desc: checks integrity of database otherwise mkdir and calls update
