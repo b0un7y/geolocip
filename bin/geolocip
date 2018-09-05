@@ -16,32 +16,39 @@ class - Engine
 desc: runs on startup if given ip address and also performs checks and updates.
 """
 class Engine():
-	def __init__(self):
-		pass
-	"""
-	func - run
-	desc: run's database check to print location
-	"""
-	def run(self):
-		pass
-	"""
-	func - setup
-	desc: checks integrity of database otherwise mkdir and calls update
-	"""
-	def setup(self):
-		pass
-	"""
-	func - dep_check
-	desc: checks system for wget and gzip
-	"""
-	def dep_check(self):
-		pass
-	"""
-	func - update
-	desc: pulls data from online and unzips
-	"""
-	def update(self):
-		pass
+    def __init__(self, ip):
+        self.ip = ip
+    """
+    func - run
+    desc: run's database check to print location
+    """
+    def run(self):
+        pass
+    """
+    func - setup
+    desc: checks integrity of database otherwise mkdir and calls update
+    """
+    def setup(self):
+        pass
+    """
+    func - dep_check
+    desc: checks system for wget and gzip
+    """
+    def dep_check(self):
+        pass
+    """
+    func - update
+    desc: pulls data from online and unzips
+    """
+    def update(self):
+        pass
 
 if __name__ == "__main__":
-	e = Engine()
+    a = argparse.ArgumentParser()
+    a.add_argument("-u", "--update", help="updates the database", action="store_true")
+    a.add_argument("-i", "--ip", help="ip address of target")
+    args = a.parse_args()
+    e = Engine(args.ip)
+    if args.update:
+        e.update()
+    e.run()
