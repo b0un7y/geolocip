@@ -1,8 +1,8 @@
-#!/bin/env/python3
+#!/bin/python3
 
 """
 GEOLOCIP: geolocation finder from ip address
-desc: 
+desc:
 vers: 0.1
 owner: b0un7y - so it is done...
 """
@@ -20,6 +20,7 @@ class Engine():
     def __init__(self, ip):
         self.ip = ip
         self.root = os.path.expanduser("~")
+
     """
     func - run
     desc: run's database check to print location
@@ -30,6 +31,7 @@ class Engine():
             r = g.record_by_addr(self.ip)
             for key,val in r.items():
                 print("%s: %s" %(key,val))
+
     """
     func - setup
     desc: checks integrity of database otherwise mkdir and calls update
@@ -38,8 +40,11 @@ class Engine():
         if self.dep_check():
             if not os.path.isdir(self.root + "/.geolocip"):
                 os.system("mkdir " + self.root + "/.geolocip")
+            if not os.path.exists(self.root + "/.geolocip/GeoLiteCity.dat"):
+                self.update()
         else:
             sys.exit("Install dependencies to run geolocip...")
+
     """
     func - dep_check
     desc: checks system for wget and gzip
